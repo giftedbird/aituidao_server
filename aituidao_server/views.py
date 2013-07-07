@@ -19,8 +19,8 @@ def book_list(request):
         responseStr = book_list_internal(sortType, pageNo, count)
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
