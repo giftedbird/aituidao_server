@@ -19,8 +19,8 @@ def book_list(request):
         responseStr = book_list_internal(sortType, pageNo, count)
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
@@ -38,8 +38,8 @@ def push_book(request):
         responseStr = push_book_internal(bookId, addr)
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
@@ -51,8 +51,8 @@ def new_url_access(request):
         responseStr = new_url_access_internal()
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
@@ -69,8 +69,8 @@ def src_addr_tail_check(request):
         responseStr = src_addr_tail_check_internal(currTail)
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
@@ -81,8 +81,8 @@ def add_book_from_file(request, fileName):
         responseStr = add_book_from_file_internal(fileName)
         if responseStr != None:
             result = responseStr 
-    except:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
@@ -115,11 +115,13 @@ else:
 
 def book_list_internal(sortType, pageNo, count):
     if sortType == SORT_TYPE_TIME:
-        #  需要重新写
-        books = Book.objects.all();
+        if pageNo < 0:
+            books = Book.objects.order_by("-id")[:count + 1]
+        else:
+            books = Book.objects.filter(id__lte = pageNo).order_by("-id")[:count + 1]
         
         bookJsonList = [];
-        for book in books:
+        for book in books[:count]:
             bookItem = {}
             bookItem["id"] = book.id
             bookItem["title"] = book.title
@@ -130,18 +132,26 @@ def book_list_internal(sortType, pageNo, count):
             
             bookJsonList.append(bookItem)
         
+        if len(books) <= count:
+            nextPageNum = -1;
+        else:
+            nextPageNum = books[count].id
+        
         bookListJson = {}
         bookListJson["status"] = 1
         bookListJson["bookList"] = bookJsonList
-        bookListJson["nextPageNum"] = 1
+        bookListJson["nextPageNum"] = nextPageNum
         
         return json.dumps(bookListJson)
+    
     elif sortType == SORT_TYPE_HOT:
-        #  需要重新写
-        books = Book.objects.all();
+        if pageNo < 0:
+            books = Book.objects.order_by("-pushCount", "-id")[:count + 1]
+        else:
+            books = Book.objects.filter(pushCount__lte = pageNo).order_by("-pushCount", "-id")[:count + 1]
         
         bookJsonList = [];
-        for book in books:
+        for book in books[:count]:
             bookItem = {}
             bookItem["id"] = book.id
             bookItem["title"] = book.title
@@ -152,10 +162,20 @@ def book_list_internal(sortType, pageNo, count):
             
             bookJsonList.append(bookItem)
         
+        if len(books) <= count:
+            nextPageNum = -1;
+        else:
+            first =  books[count - 1].id
+            second = books[count].id
+            if first == second:
+                nextPageNum = second - 1
+            else:
+                nextPageNum = second
+        
         bookListJson = {}
         bookListJson["status"] = 1
         bookListJson["bookList"] = bookJsonList
-        bookListJson["nextPageNum"] = 1
+        bookListJson["nextPageNum"] = nextPageNum
         
         return json.dumps(bookListJson)
     else:
