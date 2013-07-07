@@ -88,12 +88,6 @@ def add_book_from_file(request, fileName):
 
 
 # internal function
-class BookJson:
-    pass;
-
-class BookListJson:
-    pass;
-
 SORT_TYPE_TIME = 1
 SORT_TYPE_HOT = 2
 
@@ -104,19 +98,19 @@ def book_list_internal(sortType, pageNo, count):
         
         bookJsonList = [];
         for book in books:
-            bookItem = BookJson()
-            bookItem.id = book.id
-            bookItem.title = book.title
-            bookItem.author = book.author
-            bookItem.intro = book.intro
-            bookItem.coverUrl = book.cover
-            bookItem.pushCount = book.pushCount
+            bookItem = {}
+            bookItem["id"] = book.id
+            bookItem["title"] = book.title
+            bookItem["author"] = book.author
+            bookItem["intro"] = book.intro
+            bookItem["coverUrl"] = book.cover
+            bookItem["pushCount"] = book.pushCount
             
             bookJsonList.append(bookItem)
         
-        bookListJson = BookListJson()
-        bookListJson.bookList = bookJsonList
-        bookListJson.nextPageNum = 1
+        bookListJson = {}
+        bookListJson["bookList"] = bookJsonList
+        bookListJson["nextPageNum"] = 1
         
         return json.dumps(bookListJson)
     elif sortType == SORT_TYPE_HOT:
@@ -125,21 +119,21 @@ def book_list_internal(sortType, pageNo, count):
         
         bookJsonList = [];
         for book in books:
-            bookItem = BookJson()
-            bookItem.id = book.id
-            bookItem.title = book.title
-            bookItem.author = book.author
-            bookItem.intro = book.intro
-            bookItem.coverUrl = book.cover
-            bookItem.pushCount = book.pushCount
+            bookItem = {}
+            bookItem["id"] = book.id
+            bookItem["title"] = book.title
+            bookItem["author"] = book.author
+            bookItem["intro"] = book.intro
+            bookItem["coverUrl"] = book.cover
+            bookItem["pushCount"] = book.pushCount
             
             bookJsonList.append(bookItem)
         
-        bookListJson = BookListJson()
-        bookListJson.bookList = bookJsonList
-        bookListJson.nextPageNum = 1
+        bookListJson = {}
+        bookListJson["bookList"] = bookJsonList
+        bookListJson["nextPageNum"] = 1
         
-        return json.dump(bookListJson)
+        return json.dumps(bookListJson)
     else:
         return None
 
