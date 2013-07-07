@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from django.http import HttpResponse
-import json
+import sys, os, json
+from models import Book
 
 def book_list(request):
     result = ur'{"status":-1}'
@@ -73,6 +74,18 @@ def src_addr_tail_check(request):
     
     return HttpResponse(result)
 
+def add_book_from_file(request, fileName):
+    result = ur'{"status":-1}'
+    
+    try:
+        responseStr = add_book_from_file_internal(fileName)
+        if responseStr != None:
+            result = responseStr 
+    except Exception:
+        pass
+    
+    return HttpResponse(result)
+
 
 # internal function
 def book_list_internal(sortType, pageNo, count):
@@ -90,3 +103,53 @@ def new_url_access_internal():
 def src_addr_tail_check_internal():
     return ur'{"status":1}'
 
+if sys.platform.startswith('darwin'):
+    DICT_RELATIVE_TO_DB = r'/Users/yuanzhe/projects/files/aituidao/db_update'
+elif sys.platform.startswith('win'):
+    DICT_RELATIVE_TO_DB = r'E:\projects\files\aituidao\db_update'
+else:
+    DICT_RELATIVE_TO_DB = r'/home/giftedbird/projects/files/aituidao/db_update'
+
+def add_book_from_file_internal(fileName):
+    try:
+        filePath = DICT_RELATIVE_TO_DB + os.sep + fileName
+        f = open(filePath, 'r')
+    except:
+        return '<html><body><p><font color="#FF0000">file open error</font></p></body></html>'
+    
+    result = '<html><body>'
+    
+    for line in f:
+        if line.startswith("#") or len(line.split()) == 0:
+            continue
+        
+        try:
+            dataDict = json.loads(line, 'utf-8')
+        except:
+            result = result + '<p><font color="#FF0000">json format error ---- ' + line + '</font></p>'
+            continue
+        
+        try:
+            title = dataDict['title']
+            author = dataDict['author']
+            intro = dataDict.get('intro')
+            coverUrl = dataDict.get('coverUrl')
+            doubanRate = dataDict['doubanRate']
+        except:
+            result = result + '<p><font color="#FF0000">json lose key error ---- ' + line + '</font></p>'
+            continue
+        
+        try:
+            book = Book(title = title, author = author, intro = intro,
+                        coverUrl = coverUrl, pushCount = 0,
+                        doubanRate = doubanRate, deleted = False)
+            book.save()
+        except:
+            result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
+            continue
+        else:
+            result = result + '<p><font color="33CC00">ok ---- ' + line + '</font></p>'
+    
+    result = result + '</body></html>'
+    
+    return result

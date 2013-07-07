@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, include, url
-from views import book_list, push_book, new_url_access, src_addr_tail_check
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.conf.urls import patterns
+from views import book_list, push_book, new_url_access,\
+src_addr_tail_check, add_book_from_file
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'aituidao_server.views.home', name='home'),
-    # url(r'^aituidao_server/', include('aituidao_server.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
-    ('^aituidao/book_list/$', book_list),
-    ('^aituidao/push_book/$', push_book),
-    ('^aituidao/new_url_access/$', new_url_access),
-    ('^aituidao/src_addr_tail_check/$', src_addr_tail_check),
+    (r'^aituidao/book_list/$', book_list),
+    (r'^aituidao/push_book/$', push_book),
+    (r'^aituidao/new_url_access/$', new_url_access),
+    (r'^aituidao/src_addr_tail_check/$', src_addr_tail_check),
+    # admit
+    (r'^aituidao/admit/add_book_from_file/(.+)/$', add_book_from_file),
 )
