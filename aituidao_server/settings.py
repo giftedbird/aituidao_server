@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Django settings for aituidao_server project.
 
 DEBUG = True
@@ -7,7 +8,7 @@ import sys
 if sys.platform.startswith('darwin'):
     SQLITE3_DB_PATH = r'/Users/yuanzhe/projects/database/sqlite3/aituidao.db'
 elif sys.platform.startswith('win'):
-    SQLITE3_DB_PATH = r'E:/projects/database/sqlite3/aituidao.db'
+    SQLITE3_DB_PATH = r'E:\projects\database\sqlite3\aituidao.db'
 else:
     SQLITE3_DB_PATH = r'/home/giftedbird/projects/database/sqlite3/aituidao.db'
 
