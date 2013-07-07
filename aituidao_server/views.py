@@ -144,13 +144,13 @@ def add_book_from_file_internal(fileName):
             continue
         
         try:
-            title = dataDict['title']
-            author = dataDict['author']
-            intro = dataDict.get('intro')
-            cover = dataDict.get('cover')
-            filename = dataDict['filename']
-            pushCount = dataDict.get('pushCount', 0)
-            doubanRate = dataDict['doubanRate']
+            title = unicode(dataDict['title'])
+            author = unicode(dataDict['author'])
+            intro = unicode(dataDict.get('intro'))
+            cover = unicode(dataDict.get('cover'))
+            filename = unicode(dataDict['filename'])
+            pushCount = int(dataDict.get('pushCount', 0))
+            doubanRate = int(dataDict['doubanRate'])
             deleted = False
         except:
             result = result + '<p><font color="#FF0000">json lose key error ---- ' + line + '</font></p>'

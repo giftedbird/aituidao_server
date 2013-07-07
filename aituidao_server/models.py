@@ -9,5 +9,5 @@ class Book(models.Model):
     cover = models.CharField(max_length = 100, blank=True, null=True)
     filename = models.CharField(max_length = 100)
     pushCount = models.IntegerField()
-    doubanRate = models.FloatField()
+    doubanRate = models.IntegerField()
     deleted = models.BooleanField()
