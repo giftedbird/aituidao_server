@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from django.http import HttpResponse
+from django.db import transaction
 import sys, os, json
 from models import Book
+
 
 def book_list(request):
     result = ur'{"status":-1}'
@@ -19,8 +21,8 @@ def book_list(request):
         responseStr = book_list_internal(sortType, pageNo, count)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -74,6 +76,7 @@ def src_addr_tail_check(request):
     
     return HttpResponse(result)
 
+
 def add_book_from_file(request, fileName):
     result = ur'{"status":-1}'
     
@@ -81,8 +84,8 @@ def add_book_from_file(request, fileName):
         responseStr = add_book_from_file_internal(fileName)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -90,6 +93,7 @@ def add_book_from_file(request, fileName):
 # internal function
 SORT_TYPE_TIME = 1
 SORT_TYPE_HOT = 2
+
 
 if sys.platform.startswith('darwin'):
     DICT_RELATIVE_TO_DB = r'/Users/yuanzhe/projects/files/aituidao/db_update'
@@ -165,8 +169,8 @@ def book_list_internal(sortType, pageNo, count):
         if len(books) <= count:
             nextPageNum = -1;
         else:
-            first =  books[count - 1].id
-            second = books[count].id
+            first =  books[count - 1].pushCount
+            second = books[count].pushCount
             if first == second:
                 nextPageNum = second - 1
             else:
@@ -181,6 +185,7 @@ def book_list_internal(sortType, pageNo, count):
     else:
         return None
 
+
 def push_book_internal(bookId, addr):
     return ur'{"status":1}'
 
@@ -192,6 +197,8 @@ def new_url_access_internal():
 def src_addr_tail_check_internal():
     return ur'{"status":1}'
 
+
+@transaction.commit_on_success
 def add_book_from_file_internal(fileName):
     try:
         filePath = DICT_RELATIVE_TO_DB + os.sep + fileName
