@@ -91,6 +91,28 @@ def add_book_from_file(request, fileName):
 SORT_TYPE_TIME = 1
 SORT_TYPE_HOT = 2
 
+if sys.platform.startswith('darwin'):
+    DICT_RELATIVE_TO_DB = r'/Users/yuanzhe/projects/files/aituidao/db_update'
+elif sys.platform.startswith('win'):
+    DICT_RELATIVE_TO_DB = r'E:\projects\files\aituidao\db_update'
+else:
+    DICT_RELATIVE_TO_DB = r'/home/giftedbird/projects/files/aituidao/db_update'
+
+if sys.platform.startswith('darwin'):
+    BOOK_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_file'
+elif sys.platform.startswith('win'):
+    BOOK_FILE_DICT = r'E:\projects\files\aituidao\book_file'
+else:
+    BOOK_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_file'
+
+if sys.platform.startswith('darwin'):
+    COVER_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_cover_file'
+elif sys.platform.startswith('win'):
+    COVER_FILE_DICT = r'E:\projects\files\aituidao\book_cover_file'
+else:
+    COVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
+
+
 def book_list_internal(sortType, pageNo, count):
     if sortType == SORT_TYPE_TIME:
         #  需要重新写
@@ -149,27 +171,6 @@ def new_url_access_internal():
 
 def src_addr_tail_check_internal():
     return ur'{"status":1}'
-
-if sys.platform.startswith('darwin'):
-    DICT_RELATIVE_TO_DB = r'/Users/yuanzhe/projects/files/aituidao/db_update'
-elif sys.platform.startswith('win'):
-    DICT_RELATIVE_TO_DB = r'E:\projects\files\aituidao\db_update'
-else:
-    DICT_RELATIVE_TO_DB = r'/home/giftedbird/projects/files/aituidao/db_update'
-
-if sys.platform.startswith('darwin'):
-    BOOK_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_file'
-elif sys.platform.startswith('win'):
-    BOOK_FILE_DICT = r'E:\projects\files\aituidao\book_file'
-else:
-    BOOK_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_file'
-
-if sys.platform.startswith('darwin'):
-    COVER_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_cover_file'
-elif sys.platform.startswith('win'):
-    COVER_FILE_DICT = r'E:\projects\files\aituidao\book_cover_file'
-else:
-    COVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
 
 def add_book_from_file_internal(fileName):
     try:
