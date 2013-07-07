@@ -19,7 +19,7 @@ def book_list(request):
         responseStr = book_list_internal(sortType, pageNo, count)
         if responseStr != None:
             result = responseStr 
-    except Exception:
+    except:
         pass
     
     return HttpResponse(result)
@@ -38,7 +38,7 @@ def push_book(request):
         responseStr = push_book_internal(bookId, addr)
         if responseStr != None:
             result = responseStr 
-    except Exception:
+    except:
         pass
     
     return HttpResponse(result)
@@ -51,7 +51,7 @@ def new_url_access(request):
         responseStr = new_url_access_internal()
         if responseStr != None:
             result = responseStr 
-    except Exception:
+    except:
         pass
     
     return HttpResponse(result)
@@ -69,7 +69,7 @@ def src_addr_tail_check(request):
         responseStr = src_addr_tail_check_internal(currTail)
         if responseStr != None:
             result = responseStr 
-    except Exception:
+    except:
         pass
     
     return HttpResponse(result)
@@ -81,8 +81,8 @@ def add_book_from_file(request, fileName):
         responseStr = add_book_from_file_internal(fileName)
         if responseStr != None:
             result = responseStr 
-    except Exception:
-        pass
+    except Exception, e:
+        result = str(e)
     
     return HttpResponse(result)
 
