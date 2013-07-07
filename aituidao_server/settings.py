@@ -3,6 +3,14 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+import sys
+if sys.platform.startswith('darwin'):
+    SQLITE3_DB_PATH = r'/Users/yuanzhe/projects/database/sqlite3/aituidao.db'
+elif sys.platform.startswith('win'):
+    SQLITE3_DB_PATH = r'E:/projects/database/sqlite3/aituidao.db'
+else:
+    SQLITE3_DB_PATH = r'/home/giftedbird/projects/database/sqlite3/aituidao.db'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -12,7 +20,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/giftedbird/database/sqlite3/aituidao.db',
+        'NAME': SQLITE3_DB_PATH,
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
