@@ -150,6 +150,6 @@ def add_book_from_file_internal(fileName):
         else:
             result = result + '<p><font color="33CC00">ok ---- ' + line + '</font></p>'
     
-    result = result + '</body></html>'
+    result = result + '<p><font color="33CC00">Finish</font></p></body></html>'
     
     return result
