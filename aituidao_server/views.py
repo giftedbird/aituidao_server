@@ -109,6 +109,7 @@ def book_list_internal(sortType, pageNo, count):
             bookJsonList.append(bookItem)
         
         bookListJson = {}
+        bookListJson["status"] = 1
         bookListJson["bookList"] = bookJsonList
         bookListJson["nextPageNum"] = 1
         
@@ -130,6 +131,7 @@ def book_list_internal(sortType, pageNo, count):
             bookJsonList.append(bookItem)
         
         bookListJson = {}
+        bookListJson["status"] = 1
         bookListJson["bookList"] = bookJsonList
         bookListJson["nextPageNum"] = 1
         
