@@ -81,8 +81,8 @@ def add_book_from_file(request, fileName):
         responseStr = add_book_from_file_internal(fileName)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -173,7 +173,7 @@ if sys.platform.startswith('darwin'):
 elif sys.platform.startswith('win'):
     COVER_FILE_DICT = r'E:\projects\files\aituidao\book_cover_file'
 else:
-    CPVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
+    COVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
 
 def add_book_from_file_internal(fileName):
     try:
