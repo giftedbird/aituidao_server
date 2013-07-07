@@ -110,6 +110,20 @@ elif sys.platform.startswith('win'):
 else:
     DICT_RELATIVE_TO_DB = r'/home/giftedbird/projects/files/aituidao/db_update'
 
+if sys.platform.startswith('darwin'):
+    BOOK_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_file'
+elif sys.platform.startswith('win'):
+    BOOK_FILE_DICT = r'E:\projects\files\aituidao\book_file'
+else:
+    BOOK_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_file'
+
+if sys.platform.startswith('darwin'):
+    COVER_FILE_DICT = r'/Users/yuanzhe/projects/files/aituidao/book_cover_file'
+elif sys.platform.startswith('win'):
+    COVER_FILE_DICT = r'E:\projects\files\aituidao\book_cover_file'
+else:
+    CPVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
+
 def add_book_from_file_internal(fileName):
     try:
         filePath = DICT_RELATIVE_TO_DB + os.sep + fileName
@@ -133,16 +147,27 @@ def add_book_from_file_internal(fileName):
             title = dataDict['title']
             author = dataDict['author']
             intro = dataDict.get('intro')
-            coverUrl = dataDict.get('coverUrl')
+            cover = dataDict.get('cover')
+            filename = dataDict['filename']
+            pushCount = dataDict.get('pushCount', 0)
             doubanRate = dataDict['doubanRate']
+            deleted = False
         except:
             result = result + '<p><font color="#FF0000">json lose key error ---- ' + line + '</font></p>'
             continue
         
+        if (cover != None) and (len(cover) != 0) and (not(os.path.exists(COVER_FILE_DICT + os.sep + cover))):
+            result = result + '<p><font color="#FF0000">cover file error ---- ' + line + '</font></p>'
+            continue
+        
+        if not os.path.exists(BOOK_FILE_DICT + os.sep + filename):
+            result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
+            continue
+        
         try:
             book = Book(title = title, author = author, intro = intro,
-                        coverUrl = coverUrl, pushCount = 0,
-                        doubanRate = doubanRate, deleted = False)
+                        cover = cover, filename = filename, pushCount = pushCount,
+                        doubanRate = doubanRate, deleted = deleted)
             book.save()
         except:
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
