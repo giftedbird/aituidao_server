@@ -19,8 +19,8 @@ def book_list(request):
         responseStr = book_list_internal(sortType, pageNo, count)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -118,7 +118,7 @@ def book_list_internal(sortType, pageNo, count):
         bookListJson.bookList = bookJsonList
         bookListJson.nextPageNum = 1
         
-        return json.dump(bookListJson)
+        return json.dumps(bookListJson)
     elif sortType == SORT_TYPE_HOT:
         #  需要重新写
         books = Book.objects.all();
