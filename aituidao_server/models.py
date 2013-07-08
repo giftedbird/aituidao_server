@@ -11,4 +11,3 @@ class Book(models.Model):
     filename = models.CharField(max_length = 100)
     pushCount = models.IntegerField()
     doubanRate = models.IntegerField()
-    deleted = models.BooleanField()

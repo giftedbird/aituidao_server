@@ -133,6 +133,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["intro"] = book.intro
             bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
+            bookItem["doubanRate"] = book.doubanRate
             
             bookJsonList.append(bookItem)
         
@@ -163,6 +164,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["intro"] = book.intro
             bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
+            bookItem["doubanRate"] = book.doubanRate
             
             bookJsonList.append(bookItem)
         
@@ -227,7 +229,6 @@ def add_book_from_file_internal(fileName):
             filename = unicode(dataDict['filename'])
             pushCount = int(dataDict.get('pushCount', 0))
             doubanRate = int(dataDict['doubanRate'])
-            deleted = False
         except:
             result = result + '<p><font color="#FF0000">json lose key error ---- ' + line + '</font></p>'
             continue
@@ -250,7 +251,7 @@ def add_book_from_file_internal(fileName):
         try:
             book = Book(title = title, author = author, intro = intro,
                         cover = cover, coverUrl = coverUrl, filename = filename, pushCount = pushCount,
-                        doubanRate = doubanRate, deleted = deleted)
+                        doubanRate = doubanRate)
             book.save()
         except:
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
