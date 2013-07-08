@@ -201,7 +201,7 @@ def push_book_internal(bookId, addr):
     head = addr[0 : addr.index("@") + 1]
     book = Book.objects.filter(id = bookId)[0]
     
-    send_mail(book.title, book.title, head + EMAIL_SOURCE_ADDR_TAIL,
+    send_mail(book.title, book.title, 'aituidao@sina.com',
     ['giftedbird@163.com'], fail_silently=False)
     
     
