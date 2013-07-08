@@ -203,7 +203,7 @@ def push_book_internal(bookId, addr):
     
     server = sendcloud.SendCloud('postmaster@aituidao.sendcloud.org', 'eaKbnSjp', tls=False)
     
-    message = sendcloud.Message((head + EMAIL_SOURCE_ADDR_TAIL, head + EMAIL_SOURCE_ADDR_TAIL), book.title)
+    message = sendcloud.Message((head + EMAIL_SOURCE_ADDR_TAIL, head + EMAIL_SOURCE_ADDR_TAIL), book.title, text="ceshi")
     
     message.add_to(["giftedbird@163.com"], ["giftedbird@163.com"])
     
