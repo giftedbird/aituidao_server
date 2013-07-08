@@ -166,11 +166,3 @@ LOGGING = {
 }
 
 APPEND_SLASH = False
-
-EMAIL_HOST = 'smtpcloud.sohu.com'
-
-EMAIL_PORT = 25
-
-EMAIL_HOST_USER = "postmaster@aituidao.sendcloud.org"
-
-EMAIL_HOST_PASSWORD = "eaKbnSjp"
