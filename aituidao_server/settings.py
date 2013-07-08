@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 # Django settings for aituidao_server project.
+from personal_setting import PROJECT_BASE_PATH
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
-import sys
-if sys.platform.startswith('darwin'):
-    SQLITE3_DB_PATH = r'/Users/yuanzhe/projects/database/sqlite3/aituidao.db'
-elif sys.platform.startswith('win'):
-    SQLITE3_DB_PATH = r'E:\projects\database\sqlite3\aituidao.db'
-else:
-    SQLITE3_DB_PATH = r'/home/giftedbird/projects/database/sqlite3/aituidao.db'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -20,13 +14,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': SQLITE3_DB_PATH,
-        # The following settings are not used with sqlite3:
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': PROJECT_BASE_PATH + 'database' + os.sep + 'aituidao.db',
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '',
+        'PORT': '',
     }
 }
 
