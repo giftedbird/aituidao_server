@@ -207,7 +207,7 @@ def push_book_internal(bookId, addr):
     
     message.add_to(["giftedbird@163.com"], ["giftedbird@163.com"])
     
-    message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
+    #message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
     server.smtp.send(message)
     
     return ur'{"status":1}'
