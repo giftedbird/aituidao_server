@@ -116,6 +116,13 @@ elif sys.platform.startswith('win'):
 else:
     COVER_FILE_DICT = r'/home/giftedbird/projects/files/aituidao/book_cover_file'
 
+DEFAULT_UPLOAD_USER_NAME_MAP = (u"tangqi",
+                                u"kong",
+                                u"米兔",
+                                u"小强强开看书",
+                                u"eric",
+                                )
+
 
 def book_list_internal(sortType, pageNo, count):
     if sortType == SORT_TYPE_TIME:
@@ -134,6 +141,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
             bookItem["doubanRate"] = book.doubanRate
+            bookItem["uploadUserName"] = DEFAULT_UPLOAD_USER_NAME_MAP[book.uploadUserId]
             
             bookJsonList.append(bookItem)
         
@@ -165,6 +173,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
             bookItem["doubanRate"] = book.doubanRate
+            bookItem["uploadUserName"] = DEFAULT_UPLOAD_USER_NAME_MAP[book.uploadUserId]
             
             bookJsonList.append(bookItem)
         
@@ -248,10 +257,12 @@ def add_book_from_file_internal(fileName):
         if pushCount < 0:
             pushCount = random.randint(5, 19)
         
+        uploadUserId = random.randint(0, len(DEFAULT_UPLOAD_USER_NAME_MAP) - 1)
+        
         try:
             book = Book(title = title, author = author, intro = intro,
                         cover = cover, coverUrl = coverUrl, filename = filename, pushCount = pushCount,
-                        doubanRate = doubanRate)
+                        doubanRate = doubanRate, uploadUserId = uploadUserId)
             book.save()
         except:
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
