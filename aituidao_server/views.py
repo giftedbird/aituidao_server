@@ -236,7 +236,7 @@ def add_book_from_file_internal(fileName):
             result = result + '<p><font color="#FF0000">cover file error ---- ' + line + '</font></p>'
             continue
         
-        if (coverUrl != None) and (not(coverUrl.startswith('http//'))) and (not(coverUrl.startswith('https//'))):
+        if (coverUrl != None) and (not(coverUrl.startswith('http://'))) and (not(coverUrl.startswith('https://'))):
             result = result + '<p><font color="#FF0000">cover url format error ---- ' + line + '</font></p>'
             continue
         
