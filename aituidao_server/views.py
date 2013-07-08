@@ -3,7 +3,7 @@
 
 from django.http import HttpResponse
 from django.db import transaction
-import sys, os, json
+import sys, os, json, random
 from models import Book
 
 
@@ -243,6 +243,9 @@ def add_book_from_file_internal(fileName):
         if not os.path.exists(BOOK_FILE_DICT + os.sep + filename):
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
             continue
+        
+        if pushCount < 0:
+            pushCount = random.randint(5, 19)
         
         try:
             book = Book(title = title, author = author, intro = intro,
