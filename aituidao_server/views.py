@@ -3,16 +3,16 @@
 
 from django.http import HttpResponse
 from django.db import transaction
-import sys, os, json, random
+import os, json, random
 from models import Book
-from personal_setting import PROJECT_BASE_PATH
+from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY
 
 
 def book_list(request):
     result = ur'{"status":-1}'
     
     try:
-        postStr = request.POST['data']
+        postStr = request.POST[URL_POST_DATA_KEY]
         postDict = json.loads(postStr)
         
         sortType = int(postDict["sortType"])
@@ -32,7 +32,7 @@ def push_book(request):
     result = ur'{"status":-1}'
     
     try:
-        postStr = request.POST['data']
+        postStr = request.POST[URL_POST_DATA_KEY]
         postDict = json.loads(postStr)
         
         bookId = long(postDict["id"])
@@ -64,7 +64,7 @@ def src_addr_tail_check(request):
     result = ur'{"status":-1}'
     
     try:
-        postStr = request.POST['data']
+        postStr = request.POST[URL_POST_DATA_KEY]
         postDict = json.loads(postStr)
         
         currTail = str(postDict["currTail"])
