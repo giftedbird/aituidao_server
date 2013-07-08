@@ -53,8 +53,8 @@ def new_url_access(request):
         responseStr = new_url_access_internal()
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -93,7 +93,6 @@ def add_book_from_file(request, fileName):
 # internal function
 SORT_TYPE_TIME = 1
 SORT_TYPE_HOT = 2
-
 
 if sys.platform.startswith('darwin'):
     DICT_RELATIVE_TO_DB = r'/Users/yuanzhe/projects/files/aituidao/db_update'
