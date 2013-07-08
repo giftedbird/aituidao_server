@@ -166,11 +166,3 @@ LOGGING = {
 }
 
 APPEND_SLASH = False
-
-EMAIL_HOST = 'smtp.126.com'
-
-EMAIL_PORT = 25
-
-EMAIL_HOST_USER = "aituidao@126.com"
-
-EMAIL_HOST_PASSWORD = "748748"
