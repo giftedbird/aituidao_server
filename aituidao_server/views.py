@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.db import transaction
 import sys, os, json, random
 from models import Book
-import sendcloud
+from django.core.mail import send_mail
 
 def book_list(request):
     result = ur'{"status":-1}'
@@ -199,16 +199,16 @@ def book_list_internal(sortType, pageNo, count):
 
 def push_book_internal(bookId, addr):
     head = addr[0 : addr.index("@") + 1]
-    book = Book.objects.filter(id = bookId)[0]
+    book = Book.objects.filter(bookId = bookId)[0]
     
-    server = sendcloud.SendCloud('postmaster@aituidao.sendcloud.org', 'eaKbnSjp', tls=False)
+    send_mail(book.title, book.title, head + EMAIL_SOURCE_ADDR_TAIL,
+    ['giftedbird@163.com'], fail_silently=False)
     
-    message = sendcloud.Message((head + EMAIL_SOURCE_ADDR_TAIL, head + EMAIL_SOURCE_ADDR_TAIL), book.title, text="ceshi")
     
-    message.add_to(["giftedbird@163.com"], ["giftedbird@163.com"])
     
-    #message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
-    server.smtp.send(message)
+    
+    
+    
     
     return ur'{"status":1}'
 
