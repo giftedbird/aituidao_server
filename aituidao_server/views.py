@@ -131,7 +131,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["title"] = book.title
             bookItem["author"] = book.author
             bookItem["intro"] = book.intro
-            bookItem["coverUrl"] = book.cover
+            bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
             
             bookJsonList.append(bookItem)
@@ -161,7 +161,7 @@ def book_list_internal(sortType, pageNo, count):
             bookItem["title"] = book.title
             bookItem["author"] = book.author
             bookItem["intro"] = book.intro
-            bookItem["coverUrl"] = book.cover
+            bookItem["coverUrl"] = book.coverUrl
             bookItem["pushCount"] = book.pushCount
             
             bookJsonList.append(bookItem)
@@ -223,6 +223,7 @@ def add_book_from_file_internal(fileName):
             author = unicode(dataDict['author'])
             intro = unicode(dataDict.get('intro'))
             cover = unicode(dataDict.get('cover'))
+            coverUrl = unicode(dataDict.get('coverUrl'))
             filename = unicode(dataDict['filename'])
             pushCount = int(dataDict.get('pushCount', 0))
             doubanRate = int(dataDict['doubanRate'])
@@ -235,13 +236,17 @@ def add_book_from_file_internal(fileName):
             result = result + '<p><font color="#FF0000">cover file error ---- ' + line + '</font></p>'
             continue
         
+        if (coverUrl != None) and (not(coverUrl.startswith('http//'))) and (not(coverUrl.startswith('https//'))):
+            result = result + '<p><font color="#FF0000">cover url format error ---- ' + line + '</font></p>'
+            continue
+        
         if not os.path.exists(BOOK_FILE_DICT + os.sep + filename):
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
             continue
         
         try:
             book = Book(title = title, author = author, intro = intro,
-                        cover = cover, filename = filename, pushCount = pushCount,
+                        cover = cover, coverUrl = coverUrl, filename = filename, pushCount = pushCount,
                         doubanRate = doubanRate, deleted = deleted)
             book.save()
         except:
