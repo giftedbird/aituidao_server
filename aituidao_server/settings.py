@@ -171,6 +171,6 @@ EMAIL_HOST = 'smtp.sina.com'
 
 EMAIL_PORT = 25
 
-EMAIL_HOST_USER = "aituidao@163.com"
+EMAIL_HOST_USER = "aituidao@sina.com"
 
 EMAIL_HOST_PASSWORD = "kindleaituidao"
