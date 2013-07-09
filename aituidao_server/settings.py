@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Django settings for aituidao_server project.
-from personal_setting import PROJECT_BASE_PATH
-import os
+import personal_setting
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -14,12 +13,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': PROJECT_BASE_PATH + 'database' + os.sep + 'aituidao.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': personal_setting.DATABASE_NAME,
+        'USER': personal_setting.DATABASE_USER,
+        'PASSWORD': personal_setting.DATABASE_PASSWD,
+        'HOST': personal_setting.DATABASE_HOST,
+        'PORT': personal_setting.DATABASE_PORT,
     }
 }
 
