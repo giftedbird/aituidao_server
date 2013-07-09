@@ -228,7 +228,7 @@ def new_url_access_internal():
 def src_addr_tail_check_internal(tail):
     resultJson = {}
     
-    if tail == SOURCE_ADDRESS_TAIL:
+    if tail != SOURCE_ADDRESS_TAIL:
         resultJson["newTail"] = SOURCE_ADDRESS_TAIL
     
     resultJson["status"] = 1
