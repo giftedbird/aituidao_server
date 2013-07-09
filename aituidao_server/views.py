@@ -191,8 +191,8 @@ def push_book_internal(bookId, addr):
         book = Book.objects.filter(id = bookId)[0]
         r = r + '2:'
         addr = addr.lstrip().rstrip
-        r = r + '3:'
-        head = addr[: string.index(addr, '@')]
+        r = r + '3 ' + addr +":"
+        head = addr[:addr.index('@')]
         r = r + '4:'
         src_addr = head + SOURCE_ADDRESS_TAIL
         r = r + '5:'
