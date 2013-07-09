@@ -8,6 +8,7 @@ from models import Book
 from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY,\
 SENDCLOUD_USER, SENDCLOUD_PASSWD
 import sendcloud
+from thread import start_new_thread
 
 
 def book_list(request):
@@ -100,6 +101,7 @@ SORT_TYPE_HOT = 2
 DICT_RELATIVE_TO_DB = PROJECT_BASE_PATH + 'file' + os.sep + 'db_update' + os.sep
 BOOK_FILE_DICT = PROJECT_BASE_PATH + 'file' + os.sep + 'book_src' + os.sep
 COVER_FILE_DICT = PROJECT_BASE_PATH + 'file' + os.sep + 'book_cover' + os.sep
+LOG_FILE_DICT = PROJECT_BASE_PATH + 'file' + os.sep + 'log' + os.sep
 
 DEFAULT_UPLOAD_USER_NAME_MAP = (u"tangqi",
                                 u"kong",
@@ -186,21 +188,37 @@ def book_list_internal(sortType, pageNo, count):
 
 def push_book_internal(bookId, addr):
     book = Book.objects.filter(id = bookId)[0]
+    
     addr = addr.lstrip().rstrip()
     head = addr[:addr.index('@')]
     src_addr = head + SOURCE_ADDRESS_TAIL
+    title = book.title
+    text = book.intro
+    filename = book.filename
     
-    message = sendcloud.Message((src_addr, src_addr), book.title, text = book.intro)
-    message.add_to([addr, addr])
-    message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
-    
-    server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
-    server.smtp.send(message)
+    start_new_thread(push_book_runnable, (src_addr, title, text, addr, filename))
     
     book.pushCount = book.pushCount + 1
     book.save()
     
     return ur'{"status":1}'
+
+ 
+def push_book_runnable(src_addr, title, text, addr, filename):
+    try:
+        message = sendcloud.Message((src_addr, src_addr), title, text = text)
+        message.add_to([addr, addr])
+        message.add_attachment(filename, BOOK_FILE_DICT + filename)
+        
+        server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
+        server.smtp.send(message)
+    except Exception, e:
+        errStr = u"error: {0} -- src_addr:{1} title:{2} addr:{3} filename:{4}"\
+        .format(str(e), src_addr, title, addr, filename)
+        
+        f = open(LOG_FILE_DICT + 'push_book_thread.log', 'a')
+        f.write(errStr + '\n\n')
+        f.close()
 
 
 def new_url_access_internal():
@@ -220,7 +238,7 @@ def src_addr_tail_check_internal(tail):
 @transaction.commit_on_success
 def add_book_from_file_internal(fileName):
     try:
-        filePath = DICT_RELATIVE_TO_DB + os.sep + fileName
+        filePath = DICT_RELATIVE_TO_DB + fileName
         f = open(filePath, 'r')
     except:
         return '<html><body><p><font color="#FF0000">file open error</font></p></body></html>'
@@ -250,7 +268,7 @@ def add_book_from_file_internal(fileName):
             result = result + '<p><font color="#FF0000">json lose key error ---- ' + line + '</font></p>'
             continue
         
-        if (cover != None) and (len(cover) != 0) and (not(os.path.exists(COVER_FILE_DICT + os.sep + cover))):
+        if (cover != None) and (len(cover) != 0) and (not(os.path.exists(COVER_FILE_DICT + cover))):
             result = result + '<p><font color="#FF0000">cover file error ---- ' + line + '</font></p>'
             continue
         
@@ -258,7 +276,7 @@ def add_book_from_file_internal(fileName):
             result = result + '<p><font color="#FF0000">cover url format error ---- ' + line + '</font></p>'
             continue
         
-        if not os.path.exists(BOOK_FILE_DICT + os.sep + filename):
+        if not os.path.exists(BOOK_FILE_DICT + filename):
             result = result + '<p><font color="#FF0000">database error ---- ' + line + '</font></p>'
             continue
         
