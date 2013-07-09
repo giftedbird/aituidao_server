@@ -8,7 +8,6 @@ from models import Book
 from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY,\
 SENDCLOUD_USER, SENDCLOUD_PASSWD
 import sendcloud
-import string
 
 
 def book_list(request):
@@ -197,6 +196,9 @@ def push_book_internal(bookId, addr):
     
     server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
     server.smtp.send(message)
+    
+    book.pushCount = book.pushCount + 1
+    book.save()
     
     return ur'{"status":1}'
 
