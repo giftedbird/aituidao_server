@@ -186,33 +186,19 @@ def book_list_internal(sortType, pageNo, count):
 
 
 def push_book_internal(bookId, addr):
-    try:
-        r = '1:'
-        book = Book.objects.filter(id = bookId)[0]
-        r = r + '2:'
-        addr = addr.lstrip().rstrip()
-        r = r + '3 ' + addr +":"
-        head = addr[:addr.index('@')]
-        r = r + '4:'
-        src_addr = head + SOURCE_ADDRESS_TAIL
-        r = r + '5:'
-        
-        addr = 'giftedbird@163.com'
-        r = r + '6:'
-        message = sendcloud.Message((src_addr, src_addr), book.title, text = book.intro)
-        r = r + '7:'
-        message.add_to([addr, addr])
-        r = r + '8:'
-        message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
-        r = r + '9:'
-        server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
-        r = r + '10:'
-        server.smtp.send(message)
-        r = r + '11:'
-    except Exception, e:
-        r = r + str(e)
+    book = Book.objects.filter(id = bookId)[0]
+    addr = addr.lstrip().rstrip()
+    head = addr[:addr.index('@')]
+    src_addr = head + SOURCE_ADDRESS_TAIL
     
-    return r
+    message = sendcloud.Message((src_addr, src_addr), book.title, text = book.intro)
+    message.add_to([addr, addr])
+    message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
+    
+    server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
+    server.smtp.send(message)
+    
+    return ur'{"status":1}'
 
 
 def new_url_access_internal():
