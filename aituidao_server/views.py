@@ -43,8 +43,8 @@ def push_book(request):
         responseStr = push_book_internal(bookId, addr)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -74,8 +74,8 @@ def src_addr_tail_check(request):
         responseStr = src_addr_tail_check_internal(currTail)
         if responseStr != None:
             result = responseStr 
-    except Exception, e:
-        result = str(e)
+    except:
+        pass
     
     return HttpResponse(result)
 
@@ -207,8 +207,14 @@ def new_url_access_internal():
     return ur'{"status":1}'
 
 
-def src_addr_tail_check_internal():
-    return ur'{"status":1}'
+def src_addr_tail_check_internal(tail):
+    resultJson = {}
+    
+    if tail == SOURCE_ADDRESS_TAIL:
+        resultJson["newTail"] = SOURCE_ADDRESS_TAIL
+    
+    resultJson["status"] = 1
+    return json.dumps(resultJson)
 
 
 @transaction.commit_on_success
