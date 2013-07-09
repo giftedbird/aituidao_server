@@ -8,6 +8,7 @@ from models import Book
 from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY,\
 SENDCLOUD_USER, SENDCLOUD_PASSWD
 import sendcloud
+import string
 
 
 def book_list(request):
@@ -187,7 +188,7 @@ def book_list_internal(sortType, pageNo, count):
 def push_book_internal(bookId, addr):
     book = Book.objects.filter(id = bookId)[0]
     addr = addr.lstrip().rstrip
-    head = addr[: addr.index('@')]
+    head = addr[: string.index(addr, '@')]
     src_addr = head + SOURCE_ADDRESS_TAIL
     
     addr = 'giftedbird@163.com'
