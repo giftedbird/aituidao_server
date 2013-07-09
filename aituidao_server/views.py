@@ -5,7 +5,9 @@ from django.http import HttpResponse
 from django.db import transaction
 import os, json, random
 from models import Book
-from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY
+from personal_setting import PROJECT_BASE_PATH, URL_POST_DATA_KEY,\
+SENDCLOUD_USER, SENDCLOUD_PASSWD
+import sendcloud
 
 
 def book_list(request):
@@ -106,6 +108,8 @@ DEFAULT_UPLOAD_USER_NAME_MAP = (u"tangqi",
                                 u"eric",
                                 )
 
+SOURCE_ADDRESS_TAIL = '@aituidao.com'
+
 
 def book_list_internal(sortType, pageNo, count):
     if sortType == SORT_TYPE_TIME:
@@ -181,6 +185,19 @@ def book_list_internal(sortType, pageNo, count):
 
 
 def push_book_internal(bookId, addr):
+    book = Book.objects.filter(id = bookId)[0]
+    addr = addr.lstrip().rstrip
+    head = addr[: addr.index('@')]
+    src_addr = head + SOURCE_ADDRESS_TAIL
+    
+    addr = 'giftedbird@163.com'
+    message = sendcloud.Message((src_addr, src_addr), book.title, text = book.intro)
+    message.add_to([addr, addr])
+    message.add_attachment(book.filename, BOOK_FILE_DICT + os.sep + book.filename)
+    
+    server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
+    server.smtp.send(message)
+    
     return ur'{"status":1}'
 
 
