@@ -207,7 +207,7 @@ def push_book_internal(bookId, addr):
 def push_book_runnable(src_addr, title, text, addr, filename):
     try:
         message = sendcloud.Message((src_addr, src_addr), title, text = text)
-        message.add_to([addr, addr])
+        message.add_to([addr])
         message.add_attachment(filename, BOOK_FILE_DICT + filename)
         
         server = sendcloud.SendCloud(SENDCLOUD_USER, SENDCLOUD_PASSWD, tls=False)
