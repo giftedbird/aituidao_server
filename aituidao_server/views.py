@@ -13,7 +13,7 @@ from thread import start_new_thread
 
 # remove
 def lala(request):
-    return HttpResponse(push_book_internal(4, 'giftedbird@163.com'))
+    return HttpResponse(push_book_internal(4, 'giftedbird@yahoo.com.cn'))
 
 def book_list(request):
     result = ur'{"status":-1}'
