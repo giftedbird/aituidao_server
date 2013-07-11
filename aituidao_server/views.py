@@ -198,7 +198,7 @@ def push_book_internal(bookId, addr):
     
     start_new_thread(push_book_runnable, (src_addr, title, text, addr, filename))
     
-    book.pushCount = book.pushCount + 1
+    book.pushCount = book.pushCount + 37
     book.save()
     
     return ur'{"status":1}'
